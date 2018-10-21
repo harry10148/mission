@@ -1,12 +1,26 @@
 version: '3'
 services:
+  database: 
+    image: mysql
+    ports:   
+      - "3306:3306"
+    volumes:
+      - ./sql:/var/lib/mysql     
+    environment:
+        MYSQL_DATABASE: "test"
+        MYSQL_USER: "test"
+        MYSQL_PASSWORD: "test"
+        MYSQL_ROOT_PASSWORD: "root"
+        MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+     
   notebook:
-    image: jupyter/base-notebook:latest
+    image: harry/jupyter-notebook 
     labels:
-      description: Jupyter Notebooks
       name: jupyter notebook 
     ports:
       - "8888:8888"
     volumes:
       - ./work:/home/jovyan/work/
     command: "start-notebook.sh --NotebookApp.token="
+    depends_on: 
+    - database
