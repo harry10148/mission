@@ -1,12 +1,23 @@
 version: '3'
 services:
+  database: 
+    image: mysql
+    container_name: mysql
+    ports:   
+      - "3306:3306"
+    volumes:
+      - ./sql:/var/lib/mysql
+    restart: always     
+    environment:
+        MYSQL_USER: "test"
+        MYSQL_PASSWORD: "test"
+        MYSQL_ROOT_PASSWORD: "root"
   notebook:
-    image: jupyter/base-notebook:latest
-    labels:
-      description: Jupyter Notebooks
-      name: jupyter notebook 
+    build: .
+    container_name: jupyternotebook 
     ports:
       - "8888:8888"
     volumes:
       - ./work:/home/jovyan/work/
+    restart: always
     command: "start-notebook.sh --NotebookApp.token="
